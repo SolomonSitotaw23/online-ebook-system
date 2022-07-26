@@ -1,18 +1,18 @@
 import "./App.css";
 import Homepage from "./Pages/Homepage";
-import { Routes, Route, useParams } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Books from "./Pages/Books/Books.component.jsx";
+import PreviewBook from "./Pages/PreviewBooks/PreviewBook.component";
+import SigninAndSignUP from "./Pages/SignInAndSignUp/SigninAndSignUP";
 
-const BooksPage = (props) => {
-  const { id } = useParams();
-  console.log(props);
-  return <div>Hello{id}</div>;
-};
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Homepage />} />
-      <Route path="/books" element={<BooksPage />} />
-      <Route path="/books/:id" element={<BooksPage />} />
+      <Route path="/books" element={<Books />} />
+      <Route path="/preview" element={<PreviewBook />} />
+      <Route path="/preview/:id" element={<PreviewBook />} />
+      <Route path="/signin" element={<SigninAndSignUP />} />
     </Routes>
   );
 }

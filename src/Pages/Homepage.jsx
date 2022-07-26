@@ -72,6 +72,7 @@ const Homepage = () => {
           </div>
         </div>
       </div>
+      {/* <Reader /> */}
     </>
   );
 };
