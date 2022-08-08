@@ -14,7 +14,7 @@ const MyReader = () => {
         title="Hellow"
         location={location}
         locationChanged={locationChanged}
-        url="https://github.com/FolioReader/FolioReaderKit/raw/master/Example/Shared/Sample%20eBooks/The%20Silver%20Chair.epub"
+        url="./alice.epub"
       />
     </div>
   );
