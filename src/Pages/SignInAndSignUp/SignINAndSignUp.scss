@@ -45,9 +45,9 @@ a {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden;
-  width: 768px;
+  width: 868px;
   max-width: 100%;
-  min-height: 480px;
+  min-height: 600px;
 }
 
 .form-container form {
@@ -59,21 +59,6 @@ a {
   justify-content: center;
   align-items: center;
   text-align: center;
-}
-
-.social-container {
-  margin: 20px 0;
-}
-
-.social-container a {
-  border: 1px solid #ddd;
-  border-radius: 50%;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 5px;
-  height: 40px;
-  width: 40px;
 }
 
 .form-container input {

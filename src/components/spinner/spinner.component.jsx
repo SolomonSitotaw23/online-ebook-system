@@ -1,9 +1,9 @@
 import React from "react";
-import "./spiner.style.scss";
+import "./spinner.style.scss";
 
-const Spiner = () => {
+const Spinner = () => {
   return (
-    <>
+    <div className="wrapper">
       <div className="book">
         <div className="inner">
           <div className="left"></div>
@@ -31,14 +31,8 @@ const Spiner = () => {
           <li></li>
         </ul>
       </div>
-      <a href>
-        <img
-          src="https://dribbble.com/assets/logo-small-2x-9fe74d2ad7b25fba0f50168523c15fda4c35534f9ea0b1011179275383035439.png"
-          alt="loader"
-        />
-      </a>
-    </>
+    </div>
   );
 };
 
-export default Spiner;
+export default Spinner;

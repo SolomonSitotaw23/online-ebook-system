@@ -1,7 +1,13 @@
 import React from "react";
 import Header from "../components/Header/Header";
 import "../components/Header/header.style.scss";
+import Spinner from "../components/spinner/spinner.component";
+import { useQuery } from "@apollo/client";
+import { GET_BOOKS } from "../components/graphql";
 const Homepage = () => {
+  const { loading, error, data } = useQuery(GET_BOOKS);
+  if (loading) return <Spinner />;
+  if (error) return <p>error</p>;
   return (
     <>
       <Header />
@@ -16,9 +22,9 @@ const Homepage = () => {
                   alt="..."
                 />
               </figure>
-              <span className="book__author-name">Maria Allan Ric</span>
+              <span className="book__author-name">Yismaeke Worku</span>
             </div>
-            <div className="book__name">The Shape of Her</div>
+            <div className="book__name">{data.books[0].title}</div>
 
             <div className="feedback">
               <div className="rating">
@@ -36,10 +42,7 @@ const Homepage = () => {
               </div>
             </div>
 
-            <div className="book__summary">
-              I have always lacked something in my mind, but I have no doubts
-              about my love. Life is something like...
-            </div>
+            <div className="book__summary">{data.books[0].description}</div>
             <div className="carousel__action">
               <a className="btn btn__lg btn__primary rounded__pill" href>
                 Buy Now
@@ -51,7 +54,8 @@ const Homepage = () => {
                     32<span className="old__price-fraction">90</span>
                   </div>
                   <div className="price">
-                    25<span className="price__fraction">66</span>
+                    {data.books[0].price}
+                    <span className="price__fraction"></span>
                   </div>
                 </div>
                 <div className="discount__rate">%22</div>
@@ -61,18 +65,26 @@ const Homepage = () => {
 
           <div className="carousel__media">
             <figure className="carousel__media-item">
-              <img src="https://i.hizliresim.com/pq42a5e.jpg" alt="..." />
+              <img
+                src="http://books.good-amharic-books.com/rocket-cov.jpg"
+                alt="..."
+              />
             </figure>
             <figure className="carousel__media-item">
-              <img src="https://i.hizliresim.com/5b3hszo.jpg" alt="..." />
+              <img
+                src="http://books.good-amharic-books.com/rocket-cov.jpg"
+                alt="..."
+              />
             </figure>
             <figure className="carousel__media-item">
-              <img src="https://i.hizliresim.com/shz83mt.jpg" alt="..." />
+              <img
+                src="http://books.good-amharic-books.com/rocket-cov.jpg"
+                alt="..."
+              />
             </figure>
           </div>
         </div>
       </div>
-      {/* <Reader /> */}
     </>
   );
 };

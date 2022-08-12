@@ -1,12 +1,13 @@
 .book {
-  --color: #fff;
+  --color: #275efe;
   --duration: 6.8s;
   width: 32px;
   height: 12px;
   position: relative;
   margin: 32px 0 0 0;
-  //Demo
+
   zoom: 1.5;
+
   .inner {
     width: 32px;
     height: 12px;
@@ -178,21 +179,12 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
-* {
-  box-sizing: inherit;
-  &:before,
-  &:after {
-    box-sizing: inherit;
-  }
-}
-
 // Center & dribbble
-body {
+.wrapper {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #275efe;
   .dribbble {
     position: fixed;
     display: block;

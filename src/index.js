@@ -7,9 +7,11 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  gql,
   createHttpLink,
+  makeVar,
 } from "@apollo/client";
+import store from "./redux/store";
+import { Provider } from "react-redux";
 
 import { setContext } from "@apollo/client/link/context";
 
@@ -22,35 +24,27 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      "x-hasura-admin-secret": token,
+      "x-hasura-admin-secret": `${token}`,
     },
   };
 });
 
+const cache = new InMemoryCache();
+
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
+  cache: cache,
 });
+const cartItemsVar = makeVar("hello");
+console.log(cartItemsVar());
 
-client
-  .query({
-    query: gql`
-      {
-        users {
-          email
-          first_name
-          id
-          isAuthor
-        }
-      }
-    `,
-  })
-  .then((res) => console.log(res));
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <ApolloProvider client={client}>
-    <Router>
-      <App />
-    </Router>
-  </ApolloProvider>
+  <Provider store={store}>
+    <ApolloProvider client={client}>
+      <Router>
+        <App />
+      </Router>
+    </ApolloProvider>
+  </Provider>
 );
