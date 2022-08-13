@@ -1,6 +1,5 @@
 import React from "react";
 import "../../STYLES/Books.styles.scss";
-import Header from "../../components/Header/Header";
 import { GET_BOOKS } from "../../components/graphql";
 import Spinner from "../../components/spinner/spinner.component";
 import Book from "../../components/Book/book.component";
@@ -13,7 +12,6 @@ const Books = () => {
   if (error) return <p>error</p>;
   return (
     <>
-      <Header />
       <main>
         <Book books={data.books} />
       </main>

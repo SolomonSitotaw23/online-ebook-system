@@ -1,21 +1,34 @@
 import { gql } from "@apollo/client";
 
-export const GET_BOOKS = gql`
-  {
-    books {
+export const LOG_IN = gql`
+  query LOG_IN($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      first_name
+      email
+      token
+    }
+  }
+`;
+
+export const SIGN_UP = gql`
+  mutation SIGNUP(
+    $email: String!
+    $first_name: String!
+    $last_name: String!
+    $password: String!
+  ) {
+    signup(
+      email: $email
+      first_name: $first_name
+      last_name: $last_name
+      password: $password
+    ) {
+      token
+      first_name
+      email
       id
-      page_size
-      file
-      price
-      description
-      price
-      published_at
-      rating
-      sample_file
-      title
-      edition
-      created_at
-      cover_photo
+      isAuthor
+      last_name
     }
   }
 `;
@@ -37,6 +50,26 @@ export const GET_BOOK_DETAIL = gql`
       title
       updated_at
       sample_file
+    }
+  }
+`;
+
+export const GET_BOOKS = gql`
+  {
+    books {
+      id
+      page_size
+      file
+      price
+      description
+      price
+      published_at
+      rating
+      sample_file
+      title
+      edition
+      created_at
+      cover_photo
     }
   }
 `;

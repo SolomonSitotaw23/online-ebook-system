@@ -1,22 +1,38 @@
-import React from "react";
 import "./header.style.scss";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import BottomHeader from "./bottomHeader";
+import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/login";
+import { toggleCartDropDown } from "../../redux/cart";
+import CartDropdown from "../cartDropdown/cartDropdown.component";
 
 const Header = () => {
   const isLoggedIn = useSelector((state) => state.loginOrLogout.isLoggedIn);
-  const dispatch = useDispatch();
+  const user = useSelector((state) => state.loginOrLogout.user);
+  const { isCartDropDownHidden } = useSelector((state) => state.cart);
+  const { cartItems } = useSelector((state) => state.cart);
 
+  const dispatch = useDispatch();
+  const onLogout = () => {
+    dispatch(logout());
+  };
+  console.log(isLoggedIn);
+  console.log(user);
   return (
     <header>
       <div className="header__top sec__container">
         <div className="top__menu">
-          <a className="top__menu-link" href>
-            Help
-            <i className="icon ri-arrow-down-s-line"></i>
-          </a>
+          <Link to="/">
+            <div className="header__logo">
+              <i className="icon ri-book-2-line"></i>
+              <span className="logo__text">Bookze</span>
+            </div>
+          </Link>
+          <div className="nav__menu">
+            <Link to="/books" className="nav__menu-link">
+              Category
+              <i className="icon ri-arrow-down-s-line"></i>
+            </Link>
+          </div>
         </div>
         <div className="search__bar">
           <input
@@ -26,30 +42,46 @@ const Header = () => {
           />
           <i className="icon ri-search-line"></i>
         </div>
+        <div className="basket">
+          <button
+            onClick={() => dispatch(toggleCartDropDown())}
+            className="basket__link"
+          >
+            <span className="basket__badge rounded__pill">
+              {cartItems.length}
+            </span>
+            <ion-icon
+              name="cart"
+              className="icon icon__basket ri-shopping-bag-line"
+            ></ion-icon>
+            <i className="icon icon__arrow-down ri-arrow-down-s-line"></i>
+          </button>
+          {isCartDropDownHidden ? <CartDropdown /> : null}
+        </div>
         <div className="user__bar">
           <div className="btn__group">
             {isLoggedIn ? (
-              <Link to="/signin">
+              <Link to="/login">
                 <button
                   className="btn btn__link"
-                  onClick={() => dispatch(logout())}
+                  onClick={() => {
+                    onLogout();
+                  }}
                 >
                   Logout
                 </button>
               </Link>
             ) : (
               <Link to="/signin">
-                <a className="btn btn__primary rounded__pill" href>
+                <button className="btn btn__primary rounded__pill">
                   Login or SignUp
-                </a>
+                </button>
               </Link>
             )}
           </div>
         </div>
       </div>
       <div className="line"></div>
-
-      <BottomHeader />
     </header>
   );
 };

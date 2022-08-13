@@ -8,10 +8,10 @@ import {
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
-  makeVar,
 } from "@apollo/client";
-import store from "./redux/store";
+import { store, persistor } from "./redux/store";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 import { setContext } from "@apollo/client/link/context";
 
@@ -20,11 +20,11 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = "myadminsecretkey";
   return {
     headers: {
       ...headers,
-      "x-hasura-admin-secret": `${token}`,
+      "x-hasura-role": `Bearer ${localStorage.getItem("token")}` || "",
+      // "x-hasura-admin-secret": "myadminsecretkey",
     },
   };
 });
@@ -35,16 +35,16 @@ const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: cache,
 });
-const cartItemsVar = makeVar("hello");
-console.log(cartItemsVar());
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <ApolloProvider client={client}>
-      <Router>
-        <App />
-      </Router>
+      <PersistGate loading={null} persistor={persistor}>
+        <Router>
+          <App />
+        </Router>
+      </PersistGate>
     </ApolloProvider>
   </Provider>
 );

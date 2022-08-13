@@ -1,60 +1,51 @@
 import React from "react";
 
 import { useState } from "react";
-import { useMutation } from "@apollo/client";
-import { SIGN_UP } from "../../components/graphql";
+import { useLazyQuery } from "@apollo/client";
+import { LOG_IN } from "../../components/graphql";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../redux/login";
 import { useForm } from "../../utils/hooks";
-
 import { TextField, Container, Button, Stack, Alert } from "@mui/material";
-import { useDispatch } from "react-redux";
-
-const SignUp = () => {
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../redux/login";
+const Login = () => {
+  //   const Context = useContext(AuthContext);
+  const { isLoggedIn } = useSelector((state) => state.loginOrLogout);
+  console.log(isLoggedIn);
   const dispatch = useDispatch();
+  //   let navigate = useNavigate();
   const [errors, setErrors] = useState([]);
-  const registeruserCallback = () => {
-    registeruser();
+  const loginUserCallback = () => {
+    // console.log("login");
+    loginUser();
   };
-  const { onChange, onSubmit, values } = useForm(registeruserCallback, {
-    first_name: "",
-    last_name: "",
+  const { onChange, onSubmit, values } = useForm(loginUserCallback, {
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
-  const [registeruser, { loading }] = useMutation(SIGN_UP, {
+  const [loginUser, { loading, error, data }] = useLazyQuery(LOG_IN, {
     onCompleted: (data) => {
-      dispatch(login(data["signup"]));
+      dispatch(login(data["login"]));
     },
     onError: ({ graphQLErrors }) => {
       setErrors(graphQLErrors);
     },
     variables: {
-      first_name: values.first_name,
-      last_name: values.last_name,
       email: values.email,
       password: values.password,
     },
   });
+
   return (
     <Container spacing={2} maxWidth="sm">
-      <h3>Register</h3>
-      <p>register below</p>
+      <h3>Login</h3>
+      <p>Login below</p>
       <Stack spacing={2} paddingBottom={2}>
-        <TextField label="first name" name="first_name" onChange={onChange} />
-        <TextField label="last name" name="last_name" onChange={onChange} />
         <TextField label="email" name="email" onChange={onChange} />
         <TextField
           label="password"
           name="password"
-          type="password"
-          onChange={onChange}
-        />
-        <TextField
-          label="confirm password"
-          name="confirmPassword"
           type="password"
           onChange={onChange}
         />
@@ -65,10 +56,10 @@ const SignUp = () => {
           })
         : null}
       <Button variant="contained" onClick={onSubmit}>
-        Submit
+        Login
       </Button>
     </Container>
   );
 };
 
-export default SignUp;
+export default Login;

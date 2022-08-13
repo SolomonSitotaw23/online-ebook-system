@@ -5,7 +5,7 @@ import CheckoutItem from "../../components/checkoutItem/checkoutItem.component";
 
 const Checkout = () => {
   const { cartItems } = useSelector((state) => state.cart);
-  console.log(cartItems);
+
   let totalPrice = cartItems.reduce(
     (total, cartItem) => total + cartItem.price,
     0

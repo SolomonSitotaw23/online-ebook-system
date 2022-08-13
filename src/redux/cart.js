@@ -16,9 +16,14 @@ export const cart = createSlice({
     addItem: (state, action) => {
       state.cartItems = addItemToCart(state.cartItems, action.payload);
     },
+    clearItemFromCart: (state, action) => {
+      state.cartItems = state.cartItems.filter(
+        (cartItem) => cartItem.id !== action.payload.id
+      );
+    },
   },
 });
 
-export const { toggleCartDropDown, addItem } = cart.actions;
+export const { toggleCartDropDown, addItem, clearItemFromCart } = cart.actions;
 
 export default cart.reducer;

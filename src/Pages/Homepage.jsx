@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../components/Header/Header";
 import "../components/Header/header.style.scss";
 import Spinner from "../components/spinner/spinner.component";
 import { useQuery } from "@apollo/client";
@@ -10,8 +9,6 @@ const Homepage = () => {
   if (error) return <p>error</p>;
   return (
     <>
-      <Header />
-
       <div className="carousel sec__container">
         <div className="carousel__wrapper">
           <div className="carousel__explanation">
@@ -44,9 +41,6 @@ const Homepage = () => {
 
             <div className="book__summary">{data.books[0].description}</div>
             <div className="carousel__action">
-              <a className="btn btn__lg btn__primary rounded__pill" href>
-                Buy Now
-              </a>
               <div className="product__price rounded__pill">
                 <i className="icon ri-money-dollar-circle-line"></i>
                 <div className="price__content">
@@ -65,22 +59,13 @@ const Homepage = () => {
 
           <div className="carousel__media">
             <figure className="carousel__media-item">
-              <img
-                src="http://books.good-amharic-books.com/rocket-cov.jpg"
-                alt="..."
-              />
+              <img src={data.books[0].cover_photo} alt="..." />
             </figure>
             <figure className="carousel__media-item">
-              <img
-                src="http://books.good-amharic-books.com/rocket-cov.jpg"
-                alt="..."
-              />
+              <img src={data.books[0].cover_photo} alt="..." />
             </figure>
             <figure className="carousel__media-item">
-              <img
-                src="http://books.good-amharic-books.com/rocket-cov.jpg"
-                alt="..."
-              />
+              <img src={data.books[0].cover_photo} alt="..." />
             </figure>
           </div>
         </div>

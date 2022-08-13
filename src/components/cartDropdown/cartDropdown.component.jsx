@@ -3,6 +3,7 @@ import "./cartDropdown.styles.scss";
 import { useDispatch, useSelector } from "react-redux";
 import CartItem from "../cartItem/cartItem.component";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 import { toggleCartDropDown } from "../../redux/cart";
 const CartDropdown = () => {
   const { cartItems } = useSelector((state) => state.cart);
@@ -19,14 +20,15 @@ const CartDropdown = () => {
           <span className="empty-message">Your Cart is Empty</span>
         )}
       </div>
-      <button
+      <Button
+        variant={cartItems.length ? "outlined" : "disabled"}
         onClick={() => {
           navigate("checkout");
           dispatch(toggleCartDropDown());
         }}
       >
-        goto Checkout
-      </button>
+        Goto Checkout
+      </Button>
     </div>
   );
 };
