@@ -22,11 +22,12 @@ const MyReader = () => {
   };
   return (
     <div style={{ height: "100vh" }}>
+      {console.log(data.books_by_pk.file)}
       <ReactReader
         title={data.books_by_pk.title}
         location={location}
         locationChanged={locationChanged}
-        url={data.books_by_pk.file}
+        url={`http://localhost:5000${data.books_by_pk.file}`}
       />
     </div>
   );

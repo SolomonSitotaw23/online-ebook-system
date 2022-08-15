@@ -1,8 +1,10 @@
 import React from "react";
-import "../components/Header/header.style.scss";
 import Spinner from "../components/spinner/spinner.component";
+import "../STYLES/homepage.style.scss";
 import { useQuery } from "@apollo/client";
 import { GET_BOOKS } from "../components/graphql";
+import { Typography, Rating } from "@mui/material";
+
 const Homepage = () => {
   const { loading, error, data } = useQuery(GET_BOOKS);
   if (loading) return <Spinner />;
@@ -24,13 +26,16 @@ const Homepage = () => {
             <div className="book__name">{data.books[0].title}</div>
 
             <div className="feedback">
-              <div className="rating">
-                <span className="rating__stars"></span>
-                <div className="rating__number">
-                  <span className="rating__score">4.5</span>
-                  <div className="rating__reviews">(1346)</div>
-                </div>
-              </div>
+              <Typography component="legend">Rating</Typography>
+              <Rating
+                name="simple-controlled"
+                value={2}
+                readOnly
+                onChange={(event, newValue) => {
+                  // setValue(3);
+                }}
+              />
+
               <div className="marketing__badge">
                 <span className="marketing__badge-icon">
                   <i className="icon ri-pulse-fill"></i>
@@ -44,12 +49,10 @@ const Homepage = () => {
               <div className="product__price rounded__pill">
                 <i className="icon ri-money-dollar-circle-line"></i>
                 <div className="price__content">
-                  <div className="old__price">
-                    32<span className="old__price-fraction">90</span>
-                  </div>
+                  <div className="old__price"></div>
                   <div className="price">
                     {data.books[0].price}
-                    <span className="price__fraction"></span>
+                    <span className="price__fraction">00</span>
                   </div>
                 </div>
                 <div className="discount__rate">%22</div>
@@ -59,13 +62,22 @@ const Homepage = () => {
 
           <div className="carousel__media">
             <figure className="carousel__media-item">
-              <img src={data.books[0].cover_photo} alt="..." />
+              <img
+                src={`http://localhost:5000${data.books[0].cover_photo}`}
+                alt="..."
+              />
             </figure>
             <figure className="carousel__media-item">
-              <img src={data.books[0].cover_photo} alt="..." />
+              <img
+                src={`http://localhost:5000${data.books[0].cover_photo}`}
+                alt="..."
+              />
             </figure>
             <figure className="carousel__media-item">
-              <img src={data.books[0].cover_photo} alt="..." />
+              <img
+                src={`http://localhost:5000${data.books[0].cover_photo}`}
+                alt="..."
+              />
             </figure>
           </div>
         </div>

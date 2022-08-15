@@ -9,6 +9,8 @@ import MyReader from "./components/epub-reader/epub-reader.component";
 import Checkout from "./Pages/checkout/checkout.component";
 import SignUp from "./Pages/SignInAndSignUp/SignUp.component";
 import Header from "./components/Header/Header";
+import BookUpload from "./Pages/BookUpload/bookUpload.comonent";
+import Lost from "./Pages/404Lost/lost.coponent";
 function App() {
   const { isLoggedIn } = useSelector((state) => state.loginOrLogout);
   console.log(isLoggedIn);
@@ -35,6 +37,11 @@ function App() {
           element={isLoggedIn ? <Homepage /> : <SignUp />}
         />
         <Route path="/login" element={isLoggedIn ? <Homepage /> : <Login />} />
+        <Route
+          path="/upload"
+          element={isLoggedIn ? <BookUpload /> : <Login />}
+        />
+        <Route path="/*" element={<Lost />} />
       </Routes>
     </>
   );

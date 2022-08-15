@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import storage from "redux-persist/lib/storage";
 
 const initialState = {
   user: {},
@@ -18,6 +19,7 @@ export const userLogin = createSlice({
       window.localStorage.removeItem("token");
       state.user = {};
       state.isLoggedIn = false;
+      storage.removeItem("persist:root");
     },
   },
 });

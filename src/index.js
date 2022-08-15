@@ -24,7 +24,6 @@ const authLink = setContext((_, { headers }) => {
     headers: {
       ...headers,
       "x-hasura-role": `Bearer ${localStorage.getItem("token")}` || "",
-      // "x-hasura-admin-secret": "myadminsecretkey",
     },
   };
 });

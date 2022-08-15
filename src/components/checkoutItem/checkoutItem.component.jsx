@@ -2,6 +2,8 @@ import React from "react";
 import "./checkoutItem.style.scss";
 import { clearItemFromCart } from "../../redux/cart";
 import { useDispatch } from "react-redux";
+import { Tooltip, IconButton } from "@mui/material";
+import { Delete } from "@mui/icons-material";
 
 const CheckoutItem = ({ cartItem }) => {
   const { title, price, cover_photo, quantity } = cartItem;
@@ -10,7 +12,7 @@ const CheckoutItem = ({ cartItem }) => {
   return (
     <div className="checkout-item">
       <div className="image-container">
-        <img src={cover_photo} alt="" />
+        <img src={`http://localhost:5000${cover_photo}`} alt="" />
       </div>
       <span className="name">{title}</span>
       <span className="quantity">{quantity}</span>
@@ -19,7 +21,11 @@ const CheckoutItem = ({ cartItem }) => {
         className="remove-button"
         onClick={() => dispatch(clearItemFromCart(cartItem))}
       >
-        &#10005;
+        <Tooltip title="remove">
+          <IconButton>
+            <Delete />
+          </IconButton>
+        </Tooltip>
       </div>
     </div>
   );

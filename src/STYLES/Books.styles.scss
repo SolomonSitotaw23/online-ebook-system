@@ -27,11 +27,11 @@
     color: #adb5bd;
     font-size: 1em;
   }
-  input:focus,
-  textarea:focus,
-  select:focus {
-    outline: none;
-  }
+  // input:focus,
+  // textarea:focus,
+  // select:focus {
+  //   outline: none;
+  // }
   .nav-bar h3 {
     margin-top: 0.5em;
     /* border-bottom: 1px solid #adb5bd; */
@@ -53,10 +53,10 @@
   }
 
   /* ------------------------- main book store ---------------------------- */
-  main {
-    margin-top: 1em;
-    font-family: "Noto Sans JP", sans-serif;
-  }
+  // main {
+  //   margin-top: 1em;
+  //   font-family: "Noto Sans JP", sans-serif;
+  // }
   .books {
     display: flex;
     flex-direction: row;
@@ -76,7 +76,7 @@
   }
   .book-img {
     width: 100%;
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 1.5em;
     border-radius: 3px;
     transition: transform 1s;
@@ -108,12 +108,12 @@
     letter-spacing: 1px;
     color: white;
   }
-  .rating {
-    padding-bottom: 1.2em;
-    font-size: 1em;
-    letter-spacing: 1px;
-    color: white;
-  }
+  // .rating {
+  //   padding-bottom: 1.2em;
+  //   font-size: 1em;
+  //   letter-spacing: 1px;
+  //   color: white;
+  // }
   .info {
     font-size: 1em;
     letter-spacing: 1px;

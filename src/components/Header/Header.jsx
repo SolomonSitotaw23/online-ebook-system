@@ -10,13 +10,11 @@ const Header = () => {
   const user = useSelector((state) => state.loginOrLogout.user);
   const { isCartDropDownHidden } = useSelector((state) => state.cart);
   const { cartItems } = useSelector((state) => state.cart);
-
   const dispatch = useDispatch();
   const onLogout = () => {
     dispatch(logout());
   };
-  console.log(isLoggedIn);
-  console.log(user);
+  console.log(user.isAuthor);
   return (
     <header>
       <div className="header__top sec__container">
@@ -32,6 +30,14 @@ const Header = () => {
               Category
               <i className="icon ri-arrow-down-s-line"></i>
             </Link>
+          </div>
+          <div className="nav__menu">
+            {user.isAuthor ? (
+              <Link to="/upload" className="nav__menu-link">
+                Upload Book
+                <i className="icon ri-arrow-down-s-line"></i>
+              </Link>
+            ) : null}
           </div>
         </div>
         <div className="search__bar">

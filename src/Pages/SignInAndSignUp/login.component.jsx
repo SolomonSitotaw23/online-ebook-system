@@ -1,22 +1,31 @@
 import React from "react";
+// //////
+
+import Avatar from "@mui/material/Avatar";
+import CssBaseline from "@mui/material/CssBaseline";
+
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { LinearProgress } from "@mui/material";
+// /
 
 import { useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { LOG_IN } from "../../components/graphql";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "../../utils/hooks";
-import { TextField, Container, Button, Stack, Alert } from "@mui/material";
+import { TextField, Container, Button, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/login";
+import { Link } from "react-router-dom";
 const Login = () => {
-  //   const Context = useContext(AuthContext);
   const { isLoggedIn } = useSelector((state) => state.loginOrLogout);
   console.log(isLoggedIn);
   const dispatch = useDispatch();
-  //   let navigate = useNavigate();
   const [errors, setErrors] = useState([]);
   const loginUserCallback = () => {
-    // console.log("login");
     loginUser();
   };
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
@@ -24,7 +33,7 @@ const Login = () => {
     password: "",
   });
 
-  const [loginUser, { loading, error, data }] = useLazyQuery(LOG_IN, {
+  const [loginUser, { loading }] = useLazyQuery(LOG_IN, {
     onCompleted: (data) => {
       dispatch(login(data["login"]));
     },
@@ -36,29 +45,91 @@ const Login = () => {
       password: values.password,
     },
   });
+  function Copyright(props) {
+    return (
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        align="center"
+        {...props}
+      >
+        {"Copyright © "}
 
+        {new Date().getFullYear()}
+        {"."}
+      </Typography>
+    );
+  }
+  const theme = createTheme();
   return (
-    <Container spacing={2} maxWidth="sm">
-      <h3>Login</h3>
-      <p>Login below</p>
-      <Stack spacing={2} paddingBottom={2}>
-        <TextField label="email" name="email" onChange={onChange} />
-        <TextField
-          label="password"
-          name="password"
-          type="password"
-          onChange={onChange}
-        />
-      </Stack>
-      {errors
-        ? errors.map(function (error) {
-            return <Alert severity="error">{error.message}</Alert>;
-          })
-        : null}
-      <Button variant="contained" onClick={onSubmit}>
-        Login
-      </Button>
-    </Container>
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h3">
+            Login
+          </Typography>
+          <Box component="form" noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              onChange={onChange}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={onChange}
+            />
+            {errors
+              ? errors.map(function (error) {
+                  return <Alert severity="error">{error.message}</Alert>;
+                })
+              : null}{" "}
+            {loading ? <LinearProgress /> : null}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={onSubmit}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item>
+                <p variant="body2">
+                  Don't have an account?
+                  <Link to="/register"> Sign Up</Link>
+                </p>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Container>
+    </ThemeProvider>
   );
 };
 

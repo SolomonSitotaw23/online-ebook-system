@@ -1,38 +1,26 @@
 import React from "react";
-import "./spinner.style.scss";
+import { FallingLines } from "react-loader-spinner";
+import styled from "styled-components";
 
 const Spinner = () => {
   return (
-    <div className="wrapper">
-      <div className="book">
-        <div className="inner">
-          <div className="left"></div>
-          <div className="middle"></div>
-          <div className="right"></div>
-        </div>
-        <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div>
-    </div>
+    <Wrapper>
+      <FallingLines
+        color="#4fa94d"
+        width="100"
+        visible={true}
+        ariaLabel="falling-lines-loading"
+      />
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export default Spinner;
