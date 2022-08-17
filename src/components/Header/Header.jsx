@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/login";
 import { toggleCartDropDown } from "../../redux/cart";
 import CartDropdown from "../cartDropdown/cartDropdown.component";
+import { Button } from "@mui/material";
 
 const Header = () => {
   const isLoggedIn = useSelector((state) => state.loginOrLogout.isLoggedIn);
@@ -39,15 +40,21 @@ const Header = () => {
               </Link>
             ) : null}
           </div>
+          <div className="nav__menu">
+            <Link to="/myBooks" className="nav__menu-link">
+              My Library
+              <i className="icon ri-arrow-down-s-line"></i>
+            </Link>
+          </div>
         </div>
-        <div className="search__bar">
+        {/* <div className="search__bar">
           <input
             className="search__bar-input"
             type="search"
             placeholder="Search"
           />
           <i className="icon ri-search-line"></i>
-        </div>
+        </div> */}
         <div className="basket">
           <button
             onClick={() => dispatch(toggleCartDropDown())}
@@ -68,14 +75,14 @@ const Header = () => {
           <div className="btn__group">
             {isLoggedIn ? (
               <Link to="/login">
-                <button
-                  className="btn btn__link"
+                <Button
                   onClick={() => {
                     onLogout();
                   }}
+                  color="secondary"
                 >
                   Logout
-                </button>
+                </Button>
               </Link>
             ) : (
               <Link to="/signin">

@@ -11,9 +11,9 @@ import SignUp from "./Pages/SignInAndSignUp/SignUp.component";
 import Header from "./components/Header/Header";
 import BookUpload from "./Pages/BookUpload/bookUpload.comonent";
 import Lost from "./Pages/404Lost/lost.coponent";
+import MyBooks from "./Pages/myBooks/myBooks.component";
 function App() {
   const { isLoggedIn } = useSelector((state) => state.loginOrLogout);
-  console.log(isLoggedIn);
   return (
     <>
       {isLoggedIn ? <Header /> : null}
@@ -42,6 +42,7 @@ function App() {
           element={isLoggedIn ? <BookUpload /> : <Login />}
         />
         <Route path="/*" element={<Lost />} />
+        <Route path="/MyBooks" element={<MyBooks />} />
       </Routes>
     </>
   );

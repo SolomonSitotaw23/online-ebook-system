@@ -29,6 +29,7 @@ const MyReader = () => {
         locationChanged={locationChanged}
         url={`http://localhost:5000${data.books_by_pk.file}`}
       />
+      {console.log(`"http://localhost:5000",${data.books_by_pk.file}`)}
     </div>
   );
 };

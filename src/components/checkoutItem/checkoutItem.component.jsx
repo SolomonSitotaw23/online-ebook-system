@@ -15,7 +15,7 @@ const CheckoutItem = ({ cartItem }) => {
         <img src={`http://localhost:5000${cover_photo}`} alt="" />
       </div>
       <span className="name">{title}</span>
-      <span className="quantity">{quantity}</span>
+      <span className="quantity"></span>
       <span className="price">{price}</span>
       <div
         className="remove-button"
