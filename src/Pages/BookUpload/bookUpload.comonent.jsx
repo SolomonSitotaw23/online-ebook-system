@@ -1,8 +1,16 @@
 import React, { useState } from "react";
-import Upload from "../../components/upload/upload.component";
-import { FILE_UPLOAD_MUTATION } from "../../../src/components/graphql";
-import styled from "styled-components";
-const BookUpload = () => {
+
+const FILE_UPLOAD_MUTATION = `
+mutation addBook($book_file_base64str: String!,$book_file_name: String!,$book_file_type: String!,$comment: String!,$cover_photo_base64str: String!,$cover_photo_name: String!,$description: String!,$ISBN: String!,$edition: Int!,$page_size: Int!,$price: numeric!,$sample_file_base64str: String!,$sample_file_name:String! , $sample_file_type:String! ,$title: String!,$cover_photo_type: String!,$rating:Float!,$author:String!) {
+  addBook(book_file_base64str: $book_file_base64str, book_file_name: $book_file_name, book_file_type: $book_file_type, comment: $comment, cover_photo_base64str: $cover_photo_base64str, cover_photo_name: $cover_photo_name, description: $description, ISBN: $ISBN, edition: $edition, page_size: $page_size, price: $price, sample_file_base64str: $sample_file_base64str, sample_file_name: $sample_file_name, sample_file_type: $sample_file_type, title: $title, cover_photo_type: $cover_photo_type, author:$author, rating: $rating) {
+    file
+    cover_photo
+    sample
+    
+  }
+}
+`;
+function BookUpload() {
   const [textfile, setTextFile] = useState(null);
   const [textbase64, textsetBase64Str] = useState(null);
   const [textfilepath, setTextFilePath] = useState(null);
@@ -28,7 +36,7 @@ const BookUpload = () => {
     const title = "Emegua";
     const rating = 5.0;
     const comment = "No comment";
-
+    const author_id = "06e4087d-1095-433a-98fc-d47d090dd099"; //add the user id from the localstorage
     const variables = {
       description: description,
       ISBN: ISBN,
@@ -38,6 +46,7 @@ const BookUpload = () => {
       title: title,
       rating: rating,
       comment: comment,
+      author: author_id,
       book_file_name: book_file_name,
       book_file_type: book_file_type,
       book_file_base64str: textbase64,
@@ -53,8 +62,7 @@ const BookUpload = () => {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "x-hasura-role": `Bearer ${localStorage.getItem("token")}`,
-        // "x-hasura-admin-secret": "myadminsecretkey",
+        "x-hasura-admin-secret": "myadminsecretkey",
       },
       body: JSON.stringify({
         query: FILE_UPLOAD_MUTATION,
@@ -70,12 +78,14 @@ const BookUpload = () => {
           alert("Something went wrong");
         } else {
           console.log(res);
+
           setTextFilePath(res.data.addBook.file);
           setImageFilePath(res.data.addBook.cover_photo);
           setSampleFilePath(res.data.addBook.sample);
         }
       });
   };
+
   const textOnChange = (e) => {
     setTextFile(e.target.files[0]);
     const reader = new FileReader();
@@ -84,8 +94,6 @@ const BookUpload = () => {
     }
     reader.onload = function () {
       const base64 = btoa(reader.result);
-      // console.log(btoa(reader.result));
-      // const base64 = Buffer.from(reader.result, "utf8").toString("base64");
       textsetBase64Str(base64);
     };
 
@@ -101,7 +109,6 @@ const BookUpload = () => {
     }
     reader.onload = function () {
       const base64 = btoa(reader.result);
-
       imagesetBase64Str(base64);
     };
 
@@ -117,8 +124,6 @@ const BookUpload = () => {
     }
     reader.onload = function () {
       const base64 = btoa(reader.result);
-      // console.log(btoa(reader.result));
-      // const base64 = Buffer.from(reader.result, "utf8").toString("base64");
       samplesetBase64Str(base64);
     };
 
@@ -130,48 +135,37 @@ const BookUpload = () => {
     e.preventDefault(); // Stop form submit
     fileUpload(textfile, imagefile, samplefile);
   };
-
   return (
-    <BookUploadWrapper>
-      <div className="App">
-        <form onSubmit={onFormSubmit}>
-          <h1>Book Upload</h1>
-          <h1>text </h1>
-          <input type="file" onChange={textOnChange} required />
-          <h1>image </h1>
-          <input type="file" onChange={imageOnChange} required />
-          <h1>sample </h1>
-          <input type="file" onChange={sampleOnChange} required />
-          <br />
-          <button type="submit">Upload</button>
-        </form>
-        <div>
-          {textfilepath ? (
-            <a href={`http://localhost:5000${textfilepath}`}>Open text file</a>
-          ) : null}
-          <br />
-          {imagefilepath ? (
-            <a href={`http://localhost:5000${imagefilepath}`}>Open images</a>
-          ) : null}
-          <br />
+    <div className="App">
+      <form onSubmit={onFormSubmit}>
+        <h1>File Upload</h1>
+        <h1>text </h1>
+        <input type="file" onChange={textOnChange} required />
+        <h1>image </h1>
+        <input type="file" onChange={imageOnChange} required />
+        <h1>sample </h1>
+        <input type="file" onChange={sampleOnChange} required />
+        <br />
+        <button type="submit">Upload</button>
+      </form>
+      <div>
+        {textfilepath ? (
+          <a href={`http://localhost:5000${textfilepath}`}>Open text file</a>
+        ) : null}
+        <br />
+        {imagefilepath ? (
+          <a href={`http://localhost:5000${imagefilepath}`}>Open images</a>
+        ) : null}
+        <br />
 
-          {samplefilepath ? (
-            <a href={`http://localhost:5000${samplefilepath}`}>
-              Open sample text
-            </a>
-          ) : null}
-        </div>
-      </div>{" "}
-      {/* <Upload /> */}
-    </BookUploadWrapper>
+        {samplefilepath ? (
+          <a href={`http://localhost:5000${samplefilepath}`}>
+            Open sample text
+          </a>
+        ) : null}
+      </div>
+    </div>
   );
-};
-
-const BookUploadWrapper = styled.section`
-  height: 85vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+}
 
 export default BookUpload;
