@@ -1,17 +1,13 @@
 import React, { useState } from "react";
-
 import { useFormik } from "formik";
-
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import {
-  ThemeProvider,
   createTheme,
   Container,
   CssBaseline,
   Avatar,
   Typography,
-  Box,
   FormControlLabel,
   Checkbox,
 } from "@material-ui/core";
@@ -24,9 +20,7 @@ import { Link } from "react-router-dom";
 import validationSchema from "../../utils/validation/Validation";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-
 import { makeStyles } from "@material-ui/core/styles";
 
 const SignUp = () => {
@@ -54,7 +48,6 @@ const SignUp = () => {
       registeruserCallback();
     },
   });
-  const theme = createTheme();
 
   // graphql
   const [registeruser, { loading }] = useMutation(SIGN_UP, {

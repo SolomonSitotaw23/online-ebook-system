@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Button } from "@material-ui/core";
+import { Cloud } from "@mui/icons-material";
 
 const FILE_UPLOAD_MUTATION = `
 mutation addBook($book_file_base64str: String!,$book_file_name: String!,$book_file_type: String!,$comment: String!,$cover_photo_base64str: String!,$cover_photo_name: String!,$description: String!,$ISBN: String!,$edition: Int!,$page_size: Int!,$price: numeric!,$sample_file_base64str: String!,$sample_file_name:String! , $sample_file_type:String! ,$title: String!,$cover_photo_type: String!,$rating:Float!,$author:String!) {
@@ -140,6 +142,7 @@ function BookUpload() {
       <form onSubmit={onFormSubmit}>
         <h1>File Upload</h1>
         <h1>text </h1>
+
         <input type="file" onChange={textOnChange} required />
         <h1>image </h1>
         <input type="file" onChange={imageOnChange} required />
@@ -147,6 +150,9 @@ function BookUpload() {
         <input type="file" onChange={sampleOnChange} required />
         <br />
         <button type="submit">Upload</button>
+        <Button variant="contained" color="default" startIcon={<Cloud />}>
+          Upload
+        </Button>
       </form>
       <div>
         {textfilepath ? (
