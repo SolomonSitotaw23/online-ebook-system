@@ -7,9 +7,9 @@ import PaidIcon from "@mui/icons-material/Paid";
 
 const Checkout = () => {
   const user = useSelector((state) => state.loginOrLogout.user);
-  console.log(user);
-
+  // console.log(user);
   const { cartItems } = useSelector((state) => state.cart);
+  console.log("this", cartItems[0].id);
 
   let totalPrice = cartItems.reduce(
     (total, cartItem) => total + cartItem.price,
@@ -21,7 +21,7 @@ const Checkout = () => {
     email: user.email,
     first_name: user.first_name,
     last_name: user.first_name,
-    book_id: "jsjsssssssss",
+    book_id: cartItems[0].id,
     user_id: user.id,
   };
   console.log(formData);

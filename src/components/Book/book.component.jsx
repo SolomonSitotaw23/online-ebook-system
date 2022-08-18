@@ -22,7 +22,7 @@ const Book = ({ books }) => {
           <div className="descp">
             <h2 className="book-name">{book.title}</h2>
             <h3 className="author">by Jojo Myoes</h3>
-            <h3 className="rating">1.987 rating</h3>
+            <h3 className="rating">{book.rating}</h3>
             <p className="info">{book.description}</p>
             <div className="book__buttons">
               <Link to={`/detail/${book.id}`}>

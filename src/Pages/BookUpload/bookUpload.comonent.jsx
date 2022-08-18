@@ -1,6 +1,13 @@
 import React, { useState } from "react";
-import { Button } from "@material-ui/core";
+import { Button, TextareaAutosize } from "@material-ui/core";
 import { Cloud } from "@mui/icons-material";
+import { makeStyles } from "@material-ui/core/styles";
+import { useSelector } from "react-redux";
+import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
+
+import { Container, CssBaseline, Grid } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
 
 const FILE_UPLOAD_MUTATION = `
 mutation addBook($book_file_base64str: String!,$book_file_name: String!,$book_file_type: String!,$comment: String!,$cover_photo_base64str: String!,$cover_photo_name: String!,$description: String!,$ISBN: String!,$edition: Int!,$page_size: Int!,$price: numeric!,$sample_file_base64str: String!,$sample_file_name:String! , $sample_file_type:String! ,$title: String!,$cover_photo_type: String!,$rating:Float!,$author:String!) {
@@ -13,6 +20,7 @@ mutation addBook($book_file_base64str: String!,$book_file_name: String!,$book_fi
 }
 `;
 function BookUpload() {
+  const navigate = useNavigate();
   const [textfile, setTextFile] = useState(null);
   const [textbase64, textsetBase64Str] = useState(null);
   const [textfilepath, setTextFilePath] = useState(null);
@@ -21,8 +29,28 @@ function BookUpload() {
   const [samplefilepath, setSampleFilePath] = useState(null);
   const [imagefile, setImageFile] = useState(null);
   const [imagebase64, imagesetBase64Str] = useState(null);
+  const formik = useFormik({
+    initialValues: {
+      booktitle: "",
+      isbn: "",
+      pageSize: "",
+      price: "",
+      description: "",
+    },
+    // validationSchema: validationSchema,
+    onSubmit: (values) => {
+      fileUpload(textfile, imagefile, samplefile);
+      navigate("/books");
+    },
+  });
+
+  const user = useSelector((state) => state.loginOrLogout.user);
+
   const [imagefilepath, setImageFilePath] = useState(null);
+  // !--------------------------------------------------------------
+
   const fileUpload = (textfile, imagefile, samplefile) => {
+    console.log(user.id);
     // make fetch api call to upload file
     const book_file_name = textfile.name;
     const book_file_type = textfile.type;
@@ -30,23 +58,18 @@ function BookUpload() {
     const cover_photo_type = imagefile.type;
     const sample_file_name = samplefile.name;
     const sample_file_type = samplefile.type;
-    const description = "some desc";
-    const ISBN = "12ewdgdb";
-    const edition = 8;
-    const page_size = 354;
-    const price = 99;
-    const title = "Emegua";
-    const rating = 5.0;
+
     const comment = "No comment";
-    const author_id = "06e4087d-1095-433a-98fc-d47d090dd099"; //add the user id from the localstorage
+    const author_id = user.id; //add the user id from the localstorage
+
     const variables = {
-      description: description,
-      ISBN: ISBN,
-      edition: edition,
-      page_size: page_size,
-      price: price,
-      title: title,
-      rating: rating,
+      description: formik.values.description,
+      ISBN: formik.values.isbn,
+      edition: 1,
+      page_size: formik.values.pageSize,
+      price: formik.values.price,
+      title: formik.values.title,
+      rating: 0,
       comment: comment,
       author: author_id,
       book_file_name: book_file_name,
@@ -133,44 +156,141 @@ function BookUpload() {
       console.log("Unable to parse file");
     };
   };
-  const onFormSubmit = (e) => {
-    e.preventDefault(); // Stop form submit
-    fileUpload(textfile, imagefile, samplefile);
-  };
+
+  // !styles
+
+  const useStyles = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(8),
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+      width: "100%", // Fix IE 11 issue.
+      marginTop: theme.spacing(1),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+  }));
+  const classes = useStyles();
+
   return (
-    <div className="App">
-      <form onSubmit={onFormSubmit}>
-        <h1>File Upload</h1>
-        <h1>text </h1>
+    <Container component="main" maxWidth="sm">
+      <CssBaseline />
 
-        <input type="file" onChange={textOnChange} required />
-        <h1>image </h1>
-        <input type="file" onChange={imageOnChange} required />
-        <h1>sample </h1>
-        <input type="file" onChange={sampleOnChange} required />
-        <br />
-        <button type="submit">Upload</button>
-        <Button variant="contained" color="default" startIcon={<Cloud />}>
-          Upload
-        </Button>
-      </form>
-      <div>
-        {textfilepath ? (
-          <a href={`http://localhost:5000${textfilepath}`}>Open text file</a>
-        ) : null}
-        <br />
-        {imagefilepath ? (
-          <a href={`http://localhost:5000${imagefilepath}`}>Open images</a>
-        ) : null}
-        <br />
+      <div className="App">
+        <form className={classes.form} onSubmit={formik.handleSubmit}>
+          <h1>Upload Book</h1>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                name="title"
+                variant="outlined"
+                required
+                margin="normal"
+                fullWidth
+                id="title"
+                label="Book Title"
+                autoFocus
+                value={formik.values.title}
+                onChange={formik.handleChange}
+              />
+            </Grid>
 
-        {samplefilepath ? (
-          <a href={`http://localhost:5000${samplefilepath}`}>
-            Open sample text
-          </a>
-        ) : null}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="isbn"
+                name="isbn"
+                label="ISBN"
+                value={formik.values.isbn}
+                onChange={formik.handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="pageSize"
+                name="pageSize"
+                label="Page Size"
+                value={formik.values.pageSize}
+                onChange={formik.handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="price"
+                name="price"
+                label="price"
+                value={formik.values.price}
+                onChange={formik.handleChange}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}></Grid>
+            <Grid item xs={12} sm={6}>
+              <span>File </span>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <input type="file" onChange={textOnChange} required />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <span>sample </span>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <input type="file" onChange={sampleOnChange} required />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <span>Image </span>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <input type="file" onChange={imageOnChange} required />
+            </Grid>
+            <br />
+          </Grid>{" "}
+          <TextareaAutosize
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            id="description"
+            name="description"
+            label="Description"
+            value={formik.values.description}
+            onChange={formik.handleChange}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            margin="normal"
+            type="submit"
+            sx={{
+              marginTop: "4rem",
+            }}
+            startIcon={<Cloud />}
+          >
+            Upload
+          </Button>
+        </form>
       </div>
-    </div>
+    </Container>
   );
 }
 
